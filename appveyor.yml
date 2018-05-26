@@ -16,7 +16,7 @@ before_build:
 - pwd
 - find -ls
 - sudo apt-get update -qq
-- sudo apt -y install lxd acl python-pip -q
+- sudo apt -y install lxd acl python-pip -qq
 - lxc remote list
 - "lxc image copy ubuntu-daily:bionic local:"
 - lxc image list
