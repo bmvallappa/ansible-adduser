@@ -16,11 +16,12 @@ before_build:
 - pwd
 - find -ls
 - sudo apt-get update -qq
-- sudo apt -y install lxd acl ansible -q
+- sudo apt -y install lxd acl python-pip -q
 - lxc remote list
+- "lxc image copy ubuntu-daily:bionic local:"
 - lxc image list
-- lxc image copy ubuntu-daily:bionic local:
 - packer -v
+- pip install ansible
 - ansible --version
 - lxd --version
 - ansible-doc -t connection lxd
