@@ -21,7 +21,7 @@ before_build:
 - "lxc image copy ubuntu-daily:bionic local:"
 - lxc image list
 - packer -v
-- pip install ansible
+- sudo pip install ansible
 - ansible --version
 - lxd --version
 - ansible-doc -t connection lxd
