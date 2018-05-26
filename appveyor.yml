@@ -3,6 +3,7 @@
 # ... no virtualbox. just docker. lxd?
 # https://www.appveyor.com/docs/getting-started-with-appveyor-for-linux
 image: ubuntu
+version: '0.8.{build}'
 
 environment:
   PACKER_LOG_PATH: "packerlog.txt"
