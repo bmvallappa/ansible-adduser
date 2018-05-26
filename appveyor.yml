@@ -1,0 +1,44 @@
+# Appveyor artifacts to github release
+# more a demonstrator on a simple role that really useful
+# ... no virtualbox. just docker. lxd?
+# https://www.appveyor.com/docs/getting-started-with-appveyor-for-linux
+image: ubuntu
+
+environment:
+  PACKER_LOG_PATH: "packerlog.txt"
+  PACKER_LOG: 1
+
+before_build:
+- uname -a
+- lsb_release -a
+- env
+- pwd
+- find -ls
+- sudo apt-get update -qq
+- sudo apt -y install lxd acl -q
+- lxc remote list
+- lxc image list
+- packer -v
+
+build:
+- packer build -only=lxd packer-adduser-bionic.json
+
+after_build:
+- ls build
+
+artifacts:
+- path: build\*
+
+# https://www.appveyor.com/docs/deployment/github/
+deploy:
+  release: adduser-lxd-image-v$(appveyor_build_version)
+  description: 'Appveyor automated lxd image release'
+  provider: GitHub
+  auth_token:
+    secure: <your encrypted token>
+  artifact: /build\.*/
+  draft: true
+  prerelease: false
+  on:
+    branch: master
+    appveyor_repo_tag: true
