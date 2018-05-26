@@ -20,7 +20,7 @@ before_build:
 - lxc image list
 - packer -v
 
-build:
+build_script:
 - packer build -only=lxd packer-adduser-bionic.json
 
 after_build:
