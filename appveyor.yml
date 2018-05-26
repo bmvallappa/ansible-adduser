@@ -16,13 +16,18 @@ before_build:
 - pwd
 - find -ls
 - sudo apt-get update -qq
-- sudo apt -y install lxd acl -q
+- sudo apt -y install lxd acl ansible -q
 - lxc remote list
 - lxc image list
+- lxc image copy ubuntu-daily:bionic local:
 - packer -v
+- ansible --version
+- lxd --version
+- ansible-doc -t connection lxd
+- cd ..; ln -s ansible-adduser juju4.adduser; cd juju4.adduser
 
 build_script:
-- packer build -only=lxd packer/packer-adduser-bionic.json
+- cd packer && packer build -only=lxd packer-adduser-lxd-bionic.json
 
 after_build:
 - ls packer/build

@@ -1,0 +1,24 @@
+{
+  "provisioners": [
+    {
+      "type": "ansible",
+      "playbook_file": "../test/integration/default/default.yml",
+      "role_paths": [
+        "/etc/ansible/roles/juju4.adduser"
+      ],
+      "extra_arguments": [ "--become", "-vvv", "-c", "lxd" ]
+    }
+  ],
+  "builders": [
+    {
+      "type": "lxd",
+      "name": "lxd-bionic",
+      "image": "ubuntu-daily:bionic",
+      "output_image": "packer-adduser-ubuntu-bionic",
+      "publish_properties": {
+        "description": "Ansible adduser image with Packer"
+      }
+    }
+  ]
+}
+
