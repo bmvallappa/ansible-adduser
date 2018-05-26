@@ -22,13 +22,13 @@ before_build:
 - packer -v
 
 build_script:
-- packer build -only=lxd packer-adduser-bionic.json
+- packer build -only=lxd packer/packer-adduser-bionic.json
 
 after_build:
-- ls build
+- ls packer/build
 
 artifacts:
-- path: build\*
+- path: packer/build/*
 
 # https://www.appveyor.com/docs/deployment/github/
 deploy:
