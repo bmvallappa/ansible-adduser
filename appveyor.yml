@@ -27,6 +27,9 @@ build_script:
 after_build:
 - ls packer/build
 
+on_failure:
+- cat packerlog.txt
+
 artifacts:
 - path: packer/build/*
 
