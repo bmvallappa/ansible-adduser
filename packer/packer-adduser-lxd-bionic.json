@@ -1,12 +1,25 @@
 {
+  "variables" {
+    "ssh_private_key_file": "/tmp/packer-ansible-key"
+  },
   "provisioners": [
+    {
+      "type": "shell-local",
+      "command": "hostname; whoami; lxc list; lxc exec packer-lxd-bionic -- mkdir /root/.ssh; [ -f {{user `ssh_private_key_file`}} ] && mv {{user `ssh_private_key_file`}} {{user `ssh_private_key_file`}}.old; ssh-keygen -t rsa -b 2048 -N '' -f {{user `ssh_private_key_file`}}"
+    },
+    {
+      "type": "shell-local",
+      "command": "ssh-keygen -y -f {{user `ssh_private_key_file`}} | lxc exec packer-lxd-bionic -- tee -a /root/.ssh/authorized_keys"
+    },
+    {
+      "type": "shell",
+      "inline": "hostname; whoami; cat /root/.ssh/authorized_keys"
+    },
     {
       "type": "ansible",
       "playbook_file": "../test/integration/default/default.yml",
-      "role_paths": [
-        "/etc/ansible/roles/juju4.adduser"
-      ],
-      "extra_arguments": [ "--become", "-vvv", "-c", "lxd" ]
+      "extra_arguments": [ "--become", "-vvv", "-e", "ansible_user=root", "-e", "ansible_ssh_private_key_file={{user `ssh_private_key_file`}}"
+      ]
     }
   ],
   "builders": [
